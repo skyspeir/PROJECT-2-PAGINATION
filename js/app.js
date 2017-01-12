@@ -20,49 +20,30 @@
 
 
 
-/* Is there a way to do this, using this method of hiding students?
-$(document).ready(function () {
-
-$("ul.student-list").hide()
-})*/
-
-//document.getElementsByTagName("ul").children[0].style.display = "none"
-
-
-
 ////////////////////////* START OF CODE *////////////////////////
-//$(document).ready ONLY IF JAVASCRIPT SRC ARE NOT AT BOTTOM OF HTML DOCUMENT
 
 
-////////////////////////* VARIABLES *////////////////////////
+
+////////////////////////* PRE-DEFINEABLE VARIABLES *////////////////////////
+/* I originally had 'var page' and 'var number' defined here.
+However, I moved them below because pre-defining them outside of their respective loop
+prevented functionality */
 var htmlPage = document.getElementsByClassName('page')[0];
 var ogstudentList = document.getElementsByClassName('student-list')[0];
 var studentAmount = ogstudentList.children.length;
-var pagesNumber;
 var paginationList = document.createElement('ul');
+var pagesNumber;
 
-var page = document.createElement('li');
-var linkNumber = document.createElement('a');
-// WHY CAN'T I PUT var number = document.createTextNode(i+1);
-
-
-var pageNumber = parseInt('item.innerHTML');
-var start = (pageNumber * 10) - 10;
-var end = (pageNumber * 10);
-
-var details = document.getElementsByClassName('student-details');
+var details = document.getElementsByClassName('student-details')[0];
 var ul = document.createElement('ul');
-var btn =document.getElementsByTagName('button')[0];
-var input = document.getElementsByTagName('input')[0];
-var counter = 0;
-var arr = [];
+
+
 
 
 
 
 ////////////////////////* FUNCTIONS *////////////////////////
 function InitStudentDisplay(){
-  //log this info for some reason
   console.log('init');
 
   /*For loop where the index starts at 10.
@@ -75,8 +56,6 @@ function InitStudentDisplay(){
   for(var i=0; i<10; i++){
        ogstudentList.children[i].style.display = 'block';
    }
-   var pagesNumbersList = document.querySelectorAll('ul li a');
-    //pagesNumbersList[0].classList.add('active');
 
 }
 
@@ -100,52 +79,56 @@ console.log(studentAmount);
 2. Give ul created by var paginationList a class of 'pagination'
 3. Set paginationList as the last element within the htmlPage entity (the page div in the html body)
 4.Run a for loop that creates a numbered link for everytime i is less than the amount of pagesNumber.
-5.
-
+  a. Set the var number to create a textnode starting at 1. This has to be defined here, because i is defined in this for loop.
+  b. Set var's to create a li and a item for every page number generated from the for loop, but within the appended paginationList
+  c. Set href=# for linkNumber, which is a previously defined 'a'
+  d. Append the number i+1 to the 'a' that is linkNumber
+  e. Append the linkNumber link to page, which is a previously defined li item
+  f. Append this page list, to the prefviously defined 'ul' known as paginationList
+  g. Append this paginationList containing these items to the htmlPage, which is the page div
 */
 function pagination(studentAmount){
   calculatePagesAmount(studentAmount);
-
   paginationList.setAttribute('class', 'pagination');
   htmlPage.append(paginationList);
 
-  /*1. Set the var number to create a textnode starting at 1. This has to be defined here, because i is defined in this for loop.
-  2. Set href=# for linkNumber, which is a previously created 'a'
-  3. Append the number i+1 to the 'a' that is linkNumber
-  4. Append the linkNumber link to page, which is a previously defined li item
-  5. Append this page list, to the prefviously defined 'ul' known as paginationList
-  6. Append this paginationList containing these items finally to the htmlPage, which is the page div
-  */
   for(var i=0; i<pagesNumber; i++){
     var number = document.createTextNode(i+1);
+    var page = document.createElement('li');
+    var linkNumber = document.createElement('a');
     linkNumber.setAttribute('href', '#')
     linkNumber.append(number);
     page.append(linkNumber);
     paginationList.append(page);
     htmlPage.append(paginationList);
-    //pagesNumbersList.forEach(activePage, studentAmount);
+
   }
+  var pagesNumbersList = document.querySelectorAll('ul', 'li', 'a');
+  pagesNumbersList.forEach(activePage, studentAmount);
+
+}
 
 
-  /*function activePage(item){
+function activePage(item){
     item.onclick = function(){
-      for(var i=0; i<studentNumber; i++){
-        ogstudentList.children[i].style.display = 'none';
-      }
+         for(var i=0; i<studentAmount; i++){
+            ogstudentList.children[i].style.display = 'none';
+        }
 
-      for(var i=0; i<pagesNumbersList.length; i++){
-        pagesNumbersList[i].classList.remove('class', 'active');
-      }
+        for(var i=0; i<pagesNumber.length; i++){
+            pagesNumber[i].classList.remove('class', 'active');
+        }
 
-      item.classList.add('active');
-
-      for(var i=start; i<end; i++){
-        ogstudentList.children[i].style.display = 'block';
-      }
+        item.classList.add('active');
+        var pageNumber = parseInt(item.innerHTML);
+        var start = (pagesNumber * 10) - 10;
+        var end = (pagesNumber * 10);
+        for(var i=start; i<end; i++){
+          ogstudentList.children[i].style.display = 'block';
+        }
     }
-  }*/
+}
 
-  }
 
 
 
@@ -163,4 +146,48 @@ pagination(studentAmount);
 
 
 
+
 ////////////////////////* END OF CODE *////////////////////////
+
+
+
+
+
+////////////////////////* QUESTIONS *////////////////////////
+/* Why can't I pre-define all my variables above the code, and then just make a reference to them from inside for loops and such.
+Is there simply a proper way to be doing that, or am I just not understanding that it isn't possible all the time? */
+
+/* Is there a way to do this, utilizing JQuery?
+$(document).ready(function () {
+
+$("ul.student-list").hide()
+})*/
+
+//document.getElementsByTagName("ul").children[0].style.display = "none"*/
+
+
+
+
+/* PROBLEM ABOVE :
+So, I can see that I can move those numbers in and out of the single a link with linkNumber.append(number),
+i don't understand how to get those numbers into seperately generated list items
+If this for loop, runs for every number item, then in the loop make it create the text, and then put the text in an individual list item
+
+
+/*function activePage(item){
+  item.onclick = function(){
+    for(var i=0; i<studentNumber; i++){
+      ogstudentList.children[i].style.display = 'none';
+    }
+
+    for(var i=0; i<pagesNumbersList.length; i++){
+      pagesNumbersList[i].classList.remove('class', 'active');
+    }
+
+    item.classList.add('active');
+
+    for(var i=start; i<end; i++){
+      ogstudentList.children[i].style.display = 'block';
+    }
+  }
+}*/
